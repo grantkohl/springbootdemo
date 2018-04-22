@@ -1,65 +1,69 @@
 package com.demo.util;
 
-
-import com.demo.annotation.AnnotationMethod;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.lang.reflect.Method;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * Created by lee on 2018/4/22.
- * Aspect AOP切面
  */
 
 @Aspect
 @Component
 public class LogAspect {
 
-    //切入点
-    @Pointcut(value = "@annotation(com.demo.annotation.AnnotationMethod)")
-    private void pointcut(){
+    @Pointcut("execution(public * com.demo.controller.*.*(..))")
+    public void log(){}
+
+    @Before("log()")
+    public void before(JoinPoint joinPoint){
+        // 接收到请求，记录请求内容
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        // 记录下请求内容
+        System.out.println("URL : " + request.getRequestURL().toString());
+        System.out.println("HTTP_METHOD : " + request.getMethod());
+        System.out.println("IP : " + request.getRemoteAddr());
+        System.out.println("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        System.out.println("ARGS : " + Arrays.toString(joinPoint.getArgs()));
 
     }
 
-    //方法执行前后
-    @Around(value = "pointcut() && @annotation(annotationMethod)")
-    public Object around(ProceedingJoinPoint point, AnnotationMethod annotationMethod){
+    @AfterReturning(returning = "ret", pointcut = "log()")
+    public void doAfterReturning(Object ret) throws Throwable {
+        // 处理完请求，返回内容
+        System.out.println("方法的返回值 : " + ret);
+    }
 
-        System.out.println("执行around方法====》begin");
+    //后置异常通知
+    @AfterThrowing("log()")
+    public void afterThrowing(JoinPoint joinPoint){
+        System.out.println("方法异常时执行.....");
+    }
 
-        String value=annotationMethod.value();
+    //后置最终通知,final增强，不管是抛出异常或者正常退出都会执行
+    @After("log()")
+    public void after(JoinPoint joinPoint){
+        System.out.println("方法最后执行.....");
+    }
 
-        Class clazz=point.getTarget().getClass();
-
-        Method method=((MethodSignature)point.getSignature()).getMethod();
-
-        System.out.println("执行了 类:" + clazz + " 方法:" + method + " 自定义请求地址:" + value);
-
+    //环绕通知,环绕增强，相当于MethodInterceptor
+    @Around("log()")
+    public Object around(ProceedingJoinPoint joinPoint) {
+        System.out.println("方法环绕start.....");
         try {
-            return point.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            return throwable.getMessage();
+            Object o =  joinPoint.proceed();
+            System.out.println("方法环绕proceed，结果是 :" + o);
+            return o;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return null;
         }
-
-    }
-
-    @AfterReturning(value="pointcut() && @annotation(method)",returning = "result")
-    public Object afterReturning(JoinPoint point,AnnotationMethod method,Object result){
-
-        System.out.println("执行afterReturning方法====》begin");
-
-        System.out.println("执行结果："+result);
-
-        return result;
-    }
-
-    @AfterThrowing(value = "pointcut() && @annotation(method)", throwing = "e")
-    public void afterThrowing(JoinPoint point,AnnotationMethod method,Exception e){
-        System.out.println("执行afterThrowing方法====》begin");
     }
 }

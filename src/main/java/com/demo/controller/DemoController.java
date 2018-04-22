@@ -20,4 +20,13 @@ public class DemoController {
         return "hello";
     }
 
+    @RequestMapping("/log")
+    public Object log() {
+        return "log";
+    }
+
+    @RequestMapping("/doError")
+    public Object error() {
+        return 1/0;
+    }
 }
