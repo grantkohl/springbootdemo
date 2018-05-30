@@ -4,5 +4,6 @@
    未设置数据源时，需在@SpringBootApplication注解后增加(exclude = {DataSourceAutoConfiguration.class})
 4、使用flyway维护sql   
 5、增加日志
+6、redis 20180530
 
    
