@@ -1,15 +1,15 @@
 package com.demo.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PromotionPool {
+public class Person implements Serializable {
+
+    private static final long serialVersionUID = -6140990544739456453L;
+
     private Long id;
 
-    private Integer promotionType;
-
-    private Integer supplierId;
-
-    private Byte supplierStatus;
+    private String name;
 
     private Date createTime;
 
@@ -19,6 +19,11 @@ public class PromotionPool {
 
     private String updateBy;
 
+    /**
+     * 是否有效0 否 1是
+     */
+    private Integer yn;
+
     public Long getId() {
         return id;
     }
@@ -27,28 +32,12 @@ public class PromotionPool {
         this.id = id;
     }
 
-    public Integer getPromotionType() {
-        return promotionType;
+    public String getName() {
+        return name;
     }
 
-    public void setPromotionType(Integer promotionType) {
-        this.promotionType = promotionType;
-    }
-
-    public Integer getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public Byte getSupplierStatus() {
-        return supplierStatus;
-    }
-
-    public void setSupplierStatus(Byte supplierStatus) {
-        this.supplierStatus = supplierStatus;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreateTime() {
@@ -81,5 +70,26 @@ public class PromotionPool {
 
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
+    }
+
+    public Integer getYn() {
+        return yn;
+    }
+
+    public void setYn(Integer yn) {
+        this.yn = yn;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createTime=" + createTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateTime=" + updateTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", yn=" + yn +
+                '}';
     }
 }
