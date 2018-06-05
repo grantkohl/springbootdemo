@@ -18,19 +18,24 @@ public class RedisConfig implements EnvironmentAware {
 
     private JedisSentinelPool jedisSentinelPool;
 
-    private void ini(){
+    private void init(){
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(200);
         config.setMaxIdle(10);
         config.setMaxWaitMillis(1000);
-//        jedisPool = new JedisPool(config, Config.REDIS_IP, Config.REDIS_PORT, 10000);
+        jedisPool = new JedisPool(config, Config.REDIS_IP, Config.REDIS_PORT,  10000);
         Set<String> ips = new HashSet<>();
-        ips.add("192.168.96.48:28001");
-        jedisSentinelPool = new JedisSentinelPool("byMaster8001",ips,config,10000);
+        ips.add(Config.REDIS_SENTINEL);
+        jedisSentinelPool = new JedisSentinelPool(Config.REDIS_MASTER_NAME,ips,config,10000);
+//        jedisSentinelPool = new JedisSentinelPool("master-7002",ips,config,10000);
     }
 
     public  JedisSentinelPool getJedisSentinelPool() {
         return jedisSentinelPool;
+    }
+
+    public  JedisPool getJedisPool() {
+        return jedisPool;
     }
 
     /**
@@ -39,6 +44,6 @@ public class RedisConfig implements EnvironmentAware {
      */
     @Override
     public void setEnvironment(Environment environment) {
-        this.ini();
+        this.init();
     }
 }

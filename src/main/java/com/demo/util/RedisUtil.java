@@ -54,4 +54,23 @@ public class RedisUtil {
 			}
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public  <T> T get(String key) {
+		Jedis jedis = null;
+		try {
+			JedisSentinelPool pool = redisConfig.getJedisSentinelPool();
+//			JedisPool pool = redisConfig.getJedisPool();
+			jedis = pool.getResource();
+			byte[] value = jedis.get(key.getBytes());
+			if (value == null) {
+				return null;
+			}
+			return (T) SerializeUtil.unserialize(value);
+		} catch (Exception e) {
+			logger.error("jedis异常", e);
+			throw e;
+		} finally {
+		}
+	}
 }

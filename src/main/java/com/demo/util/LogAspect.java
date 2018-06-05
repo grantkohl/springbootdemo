@@ -21,7 +21,7 @@ public class LogAspect {
     @Pointcut("execution(public * com.demo.controller.*.*(..))")
     public void log(){}
 
-    @Before("log()")
+//    @Before("log()")
     public void before(JoinPoint joinPoint){
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -35,26 +35,26 @@ public class LogAspect {
 
     }
 
-    @AfterReturning(returning = "ret", pointcut = "log()")
+//    @AfterReturning(returning = "ret", pointcut = "log()")
     public void doAfterReturning(Object ret) throws Throwable {
         // 处理完请求，返回内容
         System.out.println("方法的返回值 : " + ret);
     }
 
     //后置异常通知
-    @AfterThrowing("log()")
+//    @AfterThrowing("log()")
     public void afterThrowing(JoinPoint joinPoint){
         System.out.println("方法异常时执行.....");
     }
 
     //后置最终通知,final增强，不管是抛出异常或者正常退出都会执行
-    @After("log()")
+//    @After("log()")
     public void after(JoinPoint joinPoint){
         System.out.println("方法最后执行.....");
     }
 
     //环绕通知,环绕增强，相当于MethodInterceptor
-    @Around("log()")
+//    @Around("log()")
     public Object around(ProceedingJoinPoint joinPoint) {
         System.out.println("方法环绕start.....");
         try {
