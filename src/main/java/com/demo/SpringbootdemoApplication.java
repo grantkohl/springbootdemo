@@ -4,12 +4,15 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Import;
 
 /**
- * 暂不读取数据源配置
+ * 不读取默认数据源配置
  */
-@SpringBootApplication
-@MapperScan(basePackages="com.demo.dao")
+@SpringBootApplication(exclude = {
+		DataSourceAutoConfiguration.class
+})
+//@MapperScan(basePackages="com.demo.dao")
 public class SpringbootdemoApplication {
 
 	public static void main(String[] args) {

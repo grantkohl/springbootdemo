@@ -1,6 +1,8 @@
 package com.demo.service.impl;
 
-import com.demo.dao.PersonMapper;
+import com.demo.config.DataSource;
+import com.demo.config.DataSourceContextHolder;
+import com.demo.dao.local.PersonMapper;
 import com.demo.domain.Person;
 import com.demo.service.DemoService;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,13 @@ public class DemoServiceImpl implements DemoService {
     /**
      * 加这里也能回滚
      * 回滚后，id仍然会自增1
-     * exception需特别设定
+     * 需特别设定rollbackfor=Exception.class
      *
-     *
+     * 自定义的注解DataSource并不能用在insertDB方法中
      */
     @Override
-//    @Transactional(rollbackFor = Exception.class)
+//    @Transactional
+    @DataSource(value="devDataSource")
     public void insert() throws Exception {
 
         insertDB();
