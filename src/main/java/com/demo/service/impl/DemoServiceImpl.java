@@ -1,7 +1,6 @@
 package com.demo.service.impl;
 
 import com.demo.config.DataSource;
-import com.demo.config.DataSourceContextHolder;
 import com.demo.dao.local.PersonMapper;
 import com.demo.domain.Person;
 import com.demo.service.DemoService;

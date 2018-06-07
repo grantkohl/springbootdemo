@@ -17,8 +17,8 @@ public class DynamicDataSourceAspect {
 
     }
 
-    @Around(value = "pointcut() && @annotation(dataSource)")
-    public void beforeSwitchDS(ProceedingJoinPoint point, DataSource dataSource){
+    @Before("@annotation(DataSource)")
+    public void beforeSwitchDS(JoinPoint point){
         //获得当前访问的class
         Class<?> className = point.getTarget().getClass();
         //获得访问的方法名
