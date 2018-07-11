@@ -125,13 +125,16 @@ public class SortUtil {
             // e1.printStackTrace();
         }
         /*
-         * // get compare method for specified field. //Abandoned. Because
-         * MethodHandle.invokeExact() is a little faster than Method.invoke()
-         * Method cmpMethod = null; try { cmpMethod =
-         * fieldClazz.getDeclaredMethod("compareTo", fieldClazz); } catch
-         * (NoSuchMethodException | SecurityException e1) { System.out.println(
-         * "deny access to class or method(comparaTo).\nImpossible to show errorStrackTrace Because of Comparable check"
-         * ); e1.printStackTrace(); cmpMethod.setAccessible(true); }
+         * // get compare method for specified field.
+         * //Abandoned. Because MethodHandle.invokeExact() is a little faster than Method.invoke()
+         * Method cmpMethod = null;
+         * try {
+         *     cmpMethod = fieldClazz.getDeclaredMethod("compareTo", fieldClazz);
+         * } catch (NoSuchMethodException | SecurityException e1) {
+         *     System.out.println( "deny access to class or method(comparaTo).\nImpossible to show errorStrackTrace Because of Comparable check" );
+         *     e1.printStackTrace();
+         *     cmpMethod.setAccessible(true);
+         * }
          */
         Cmp<E> cmp;
         MethodHandles.Lookup lookup = MethodHandles.lookup();
@@ -180,5 +183,5 @@ public class SortUtil {
     public static <E> void sortByFieldDesc(List<E> list, String fieldName) {
         sortByField(list, fieldName, "desc");
     }
-    
+
 }
